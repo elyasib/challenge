@@ -10,6 +10,10 @@ object OffenseParser {
       .drop(1)
       .toSeq  
 
+    parse(rawEvents)
+  }
+
+  def parse(rawEvents: Seq[String]) = {
     val offenses: Seq[Offense] = rawEvents.map(event => {
       try {
         val offenseArray = event.split(",")
