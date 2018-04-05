@@ -36,6 +36,7 @@ object Challenge {
       .map(_.get)
 
     val order = Ordering.by[(String, Int), Int](_._2)(Ordering.Int.reverse)
+    val orderOffense = Ordering.by[Offense, Int](_.offenderAge)
 
     //question 1
     val top10 = offenses.groupBy(_.station)
@@ -43,6 +44,23 @@ object Challenge {
       .toList
       .sorted(order)
       .take(10)
+
+    type AgeRange = (Int, Int)
+
+    //question 2 There's only one offender woman in the dataset, but if there where more I would use something like
+    val topGroup = offenses.filter(_.offenderSex == "WOMAN")
+      .groupBy(_.offenderAge)
+      .map{case (age, offenses) => (age, offenses.size)}
+      .toList
+      .grouped(5)
+      .map(group => {
+        val offenses: Int = group.foldLeft(0)((acc, pair) => acc + pair._2)
+        val startAge = group.head._1
+        val endAge = group.last._1
+        ((startAge, endAge), offenses)
+      })
+      .toList
+      .head
 
     // question 2
     val times = offenses.map(offense => offense.reportEndTime.minusHours(offense.reportStartTime.getHour).minusMinutes(offense.reportStartTime.getMinute))
@@ -52,7 +70,7 @@ object Challenge {
     val meanWaitTime = LocalTime.ofSecondOfDay(times.sum / times.size)
 
     println(top10)
+    println(topGroup)
     println(meanWaitTime)
-
   }
 }
