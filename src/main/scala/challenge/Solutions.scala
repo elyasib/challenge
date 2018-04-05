@@ -1,6 +1,7 @@
 package challenge
 
 import java.time.LocalTime
+import scala.collection.immutable.SortedSet;
 
 object Solutions {
   type AgeGroup = (Int, Int)
@@ -37,19 +38,34 @@ object Solutions {
 
   // Finds the female-offender age-group with the highest number of offenses.
   def findTopGroup(offenses: Seq[Offense]): AgeGroupOffenses = {
-    val topGroup = offenses.filter(_.offenderSex == "WOMAN")
+    val ageGroupOffensesOrder = Ordering.by[AgeGroupOffenses, Int](_._2)(Ordering.Int.reverse)
+
+    val offensesByAge: Map[Int, Int] = offenses
+      // take into account only offenses made by women
+      .filter(_.offenderSex == "WOMAN")
+      // group by the age of the offender
       .groupBy(_.offenderAge)
+      // create map of Map[](offenderAge, numberOfOffenses) where numberOfOffenses is the total number of offenses per age
       .map{case (age, offensesList) => (age, offensesList.size)}
-      .toList
+
+    // Compute the min and max ages to build 5 years groups
+    // e.g. if the min age in the events is 23 and the max age is 54
+    // minAge=20 and maxAge=55
+    val maxOffensesAge = offensesByAge.keySet.max
+    val minOffensesAge = offensesByAge.keySet.min
+    val maxAge = maxOffensesAge + 5 - ((maxOffensesAge + 5) % 5)
+    val minAge = minOffensesAge - (minOffensesAge % 5)
+
+    val sortedGroups: SortedSet[AgeGroupOffenses] = (minAge to maxAge) // List ages within minAge and maxAge
+      // groups ages with 5 elements.
+      // i.e. creates age groups List(List(minAge, minAge+1, minAge+2, minAge+3, minAge+4), ..., List(maxAge-4, maxAge-3, maxAge-2, maxAge-1, maxAge))
       .grouped(5)
-      .map(group => {
-        val offensesSum: Int = group.foldLeft(0)((acc, pair) => acc + pair._2)
-        val startAge = group.head._1
-        val endAge = group.last._1
-        ((startAge, endAge), offensesSum)
+      // compute the number of offenses per age group
+      .foldLeft(SortedSet[AgeGroupOffenses]()(ageGroupOffensesOrder))((orderedSet, agesInGroup) => {
+        val totalOffenses = agesInGroup.foldLeft(0)((sum, age) => sum + offensesByAge.getOrElse(age, 0)) 
+        orderedSet + (((agesInGroup.head, agesInGroup.last), totalOffenses))
       })
-      .toList
-      .head
-    topGroup
+    
+    sortedGroups.head
   }
 }
