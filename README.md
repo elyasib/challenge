@@ -12,3 +12,11 @@ Then enter the sbt console:
 And run the code:
 
 `run {absolute-path-to-data-file}`
+
+Alternatively you can test the code using the dataset you provided executing:
+
+`sbt test`
+
+or if you are already at the sbt console, just
+
+`test`
