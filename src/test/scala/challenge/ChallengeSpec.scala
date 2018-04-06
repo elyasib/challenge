@@ -16,7 +16,7 @@ class HelloSpec extends FlatSpec with Matchers {
      offenses.size should be > 0 
   }
 
-  "Solution" should "should find the top10 stations most dangerous for woman" in {
+  "Solution" should "should find the top10 stations most dangerous for women" in {
     val offenses = OffenseParser.parse(rawEvents)
     val expected = List(("HIDALGO", 31), ("BALDERAS", 18), ("PINO SUÁREZ", 14), ("PANTITLÁN", 14), ("INDIOS VERDES", 13), ("TACUBAYA", 12),
       ("BELLAS ARTES", 10), ("GUERRERO", 9), ("SALTO DEL AGUA", 8), ("ZÓCALO", 7))
@@ -24,17 +24,17 @@ class HelloSpec extends FlatSpec with Matchers {
 
     println(s"\nTop10 stations most dangerous for woman:\n${top10.mkString(",")}")
 
-    top10 === expected
+    top10 should equal (expected)
   }
 
   "Solution" should "find the top female-offender age-group with the highest number of offenses" in {
     val offenses = OffenseParser.parse(rawEvents)
-    val expected = ((31, 31), 1)
+    val expected = ((30, 34), 1)
     val topGroup = findTopGroup(offenses)
 
-    println(s"\nTop female-offender age-group with the highest number of offenses:\n Ages=${topGroup._1} offenses=${topGroup._2}")
+    println(s"\nTop female-offender age-group with the highest number of offenses:\n AgeGroup(min, max)=${topGroup._1} offenses=${topGroup._2}")
 
-    topGroup === expected
+    topGroup should equal (expected)
   }
 
   "Solution" should "find the average time the offended persons wait in the police station" in {
@@ -44,7 +44,7 @@ class HelloSpec extends FlatSpec with Matchers {
 
     println(s"\nMean time an offended person stays at the police station:\n ${meanWaitTime}\n")
 
-    meanWaitTime === expected
+    meanWaitTime should equal (expected)
   }
 
 }
