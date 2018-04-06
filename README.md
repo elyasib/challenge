@@ -13,7 +13,7 @@ And run the code:
 
 `run {absolute-path-to-data-file}`
 
-Alternatively you can test the code using the dataset you provided executing:
+Alternatively you can test the code using the dataset you (wizeline) provided by executing:
 
 `sbt test`
 
