@@ -20,7 +20,7 @@ object Challenge {
     //   1. The events are from weekdays only.
     //   2. The event log is based on reported offenses but there might be several more offenses that go unreported. One valid,
     //      if extreme, argument one can make is that perhaps people that are offended in some of the stations with the least amount of
-    //      reports never report the offense because they get killed, or they are offended a police officer. (Similar to the problem of
+    //      reports never report the offense because they get killed, or they are offended by a police officer. (Similar to the problem of
     //      shot down planes during WW2 that Abraham Wald helped solving).
     //   3. The data sample could be too small, in terms of sampling time and absolute size.
 
