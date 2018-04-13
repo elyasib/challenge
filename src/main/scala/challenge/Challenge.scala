@@ -9,7 +9,7 @@ object Challenge {
     //question 1
     val top10 = getTop10(offenses)
 
-    //question 2 There's only one woman offenderwoman in the dataset, but if there where more I would use something like this:
+    //question 2 There's only one offender woman in the dataset, but if there were more I would use something like this:
     val topGroup = findTopGroup(offenses)
 
     // question 3
